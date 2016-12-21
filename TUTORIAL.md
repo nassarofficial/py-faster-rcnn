@@ -1,13 +1,13 @@
 # Train Py-Faster-RCNN on Another Dataset
 
-This tutorial is a fine-tuned clone of [zeyuanxy's one](https://github.com/zeyuanxy/fast-rcnn/tree/master/help/train) for the [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) code.
+This tutorial is a fine-tuned clone of [zeyuanxy's one](https://github.com/zeyuanxy/fast-rcnn/tree/master/help/train) for the [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) code and [Deboc's](https://github.com/debocs/py-faster-rcnn).
 
-We will illustrate how to train Py-Faster-RCNN on another dataset in the following steps, and we will take **INRIA Person** as the example dataset.
+We will illustrate how to train Py-Faster-RCNN on another dataset, in this case Pascal Voc 2012 in the following steps we will only provide you with a sample for you to follow, please refer to the original tutorials above for full datasets.
 
 ## Clone py-faster-rcnn repository
 The current tutorial need you to have clone and tested the regular py-faster-rcnn repository from rbgirshick.
 ```sh
-$ git clone https://github.com/rbgirshick/py-faster-rcnn
+$ git clone --recursive https://github.com/rbgirshick/py-faster-rcnn.git
 ```
 We will refer to the root directory with $PY_FASTER_RCNN.
 
@@ -15,40 +15,18 @@ You will also need to follow the installation steps from [the original py-faster
 
 ## Build the train-set
 
-### Get the Dataset
-When you download and extract the [Inria Person dataset](ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar) you obtain this architecture:
-```
-|-- INRIAPerson/
-    |-- 70X134H96/
-    |-- 96X160H96/
-    |-- Test/
-    |-- test_64x128_H96/
-    |-- Train/
-    |-- train_64x128_H96/
-```
-
 ### Format the Dataset
 
-But we will use this common architecture for every dataset in $PY_FASTER_RCNN/data
+But we will use this common architecture for every dataset in $PY_FASTER_RCNN/data, I have added a sample dataset, and used  [labelimg](https://github.com/tzutalin/labelImg) 
 ```
-INRIA_Person_devkit/
+py-faster-rcnn/Example_Dataset/
 |-- data/
     |-- Annotations/
-         |-- *.txt (Annotation files)
+         |-- *.xml (Annotation files)
     |-- Images/
          |-- *.png (Image files)
     |-- ImageSets/
          |-- train.txt
-```
-
-A simple way to achieve it is to use symbolic links:
-(this is only an example for training, some refactoring will be needing in order to use the testset properly)
-```sh
-$ cd $PY_FASTER_RCNN/data
-$ mkdir INRIA_Person_devkit/
-$ mkdir INRIA_Person_devkit/data/
-$ ln -s <INRIAPerson>/Train/annotations/ INRIA_Person_devkit/data/Annotations
-$ ln -s <INRIAPerson>/Train/pos/ INRIA_Person_devkit/data/Images
 ```
 
 Now we need to write `train.txt` that contains all the names(without extensions) of images files that will be used for training.
