@@ -17,7 +17,7 @@ You will also need to follow the installation steps from [the original py-faster
 
 ### Format the Dataset
 
-But we will use this common architecture for every dataset in $PY_FASTER_RCNN/data, I have added a sample dataset, and used  [labelimg](https://github.com/tzutalin/labelImg) 
+But we will use this common architecture for every dataset in $PY_FASTER_RCNN/data, I have added a sample dataset, and used  [labelimg](https://github.com/tzutalin/labelImg). We will be using 3 images with a different class each, 'cat', 'dog', 'person'.
 ```
 py-faster-rcnn/Example_Dataset/
 |-- data/
@@ -32,28 +32,27 @@ py-faster-rcnn/Example_Dataset/
 Now we need to write `train.txt` that contains all the names(without extensions) of images files that will be used for training.
 Basically with the following:
 ```sh
-$ cd $PY_FASTER_RCNN/data/INRIA_Person_devkit/data/
+$ cd $PY_FASTER_RCNN/data/Example_Dataset/data/
 $ mkdir ImageSets
 $ ls Annotations/ -m | sed s/\\s/\\n/g | sed s/.txt//g | sed s/,//g > ImageSets/train.txt
 ```
 
 ### Add lib/datasets/yourdatabase.py
-You need to add a new python file describing the dataset we will use to the directory `$PY_FASTER_RCNN/lib/datasets`, see [inria.py](https://github.com/deboc/py-faster-rcnn/blob/master/lib/datasets/inria.py). Then the following steps should be taken.
-  - Modify `self._classes` in the constructor function to fit your dataset.
-  - Be careful with the extensions of your image files. See `image_path_from_index` in `inria.py`.
-  - Write the function for parsing annotations. See `_load_inria_annotation` in `inria.py`.
-  - Do not forget to add `import` syntaxes in your own python file and other python files in the same directory.
+You need to add a new python file describing the dataset we will use to the directory `$PY_FASTER_RCNN/lib/datasets`, see [example.py](https://github.com/deboc/py-faster-rcnn/blob/master/lib/datasets/inria.py). Then the following steps should be taken.
+  - Modify `self._classes` in the constructor function to fit your dataset, leave '__background__', and add your own. In our example we added 'cat','dog','person'.
+  - Be careful with the extensions of your image files. See `image_path_from_index` in `example.py`.
+  - Write the function for parsing annotations. See `_load_example_annotation` in `example.py`. We modified it to be able to use Pascal Voc 2012, so if you labeled using the tool specified in the "Format the Dataset" step, and placed them in the right place, you do not need to worry.
+  - Do not forget to add `import` syntaxes in your own python file and other python files in the same directory. 
 
 ### Update lib/datasets/factory.py
 
-Then you should modify the [factory.py](https://github.com/deboc/py-faster-rcnn/blob/master/lib/datasets/factory.py) in the same directory. For example, to add **INRIA Person**, we should add
+Then you should modify the [factory.py](https://github.com/deboc/py-faster-rcnn/blob/master/lib/datasets/factory.py) in the same directory. For example, to add **Example Dataset**, we should add
 
 ```py
-from datasets.inria import inria
-inria_devkit_path = '$PY_FASTER_RCNN/data/INRIA_Person_devkit'
+example_dataset_path = 'data/Example_Dataset'
 for split in ['train', 'test']:
-    name = '{}_{}'.format('inria', split)
-    __sets[name] = (lambda split=split: inria(split, inria_devkit_path))
+    name = '{}_{}'.format('example', split)
+    __sets[name] = (lambda split=split: example(split, example_dataset_path))
 ```
 **NB** : $PY_FASTER_RCNN must be replaced by its actual value !
 
@@ -63,8 +62,8 @@ For example, if you want to use the model **VGG_CNN_M_1024** with alternated opt
 
 ```sh
 $ cd $PY_FASTER_RCNN/models/
-$ mkdir INRIA_Person/
-$ cp -r pascal_voc/VGG_CNN_M_1024/faster_rcnn_alt_opt/ INRIA_Person/
+$ mkdir Example/
+$ cp -r pascal_voc/VGG_CNN_M_1024/faster_rcnn_alt_opt/ Example_Dataset/
 ```
 
 It mainly concerns with the number of classes you want to train. Let's assume that the number of classes is C (do not forget to count the `background` class). Then you should 
@@ -72,9 +71,12 @@ It mainly concerns with the number of classes you want to train. Let's assume th
   - Modify `num_output` in the `cls_score` layer to `C`
   - Modify `num_output` in the `bbox_pred` layer to `4 * C`
 
-Basically for our binary classifier (Person vs Background) C=2 and you have:
-    - 7 lines to be modified from 21 to 2
-    - 3 lines to be modified from 84 to 8
+Basically we are classifying 3 things (Person, Cat, Dog and Background) so C=4 and you have:
+
+    - 7 lines to be modified from 21 to 4
+    
+    - 3 lines to be modified from 84 to 16
+    
 ```sh
 $ grep 21 VGG_CNN_M_1024/faster_rcnn_alt_opt/*.pt
    INRIA_Person/faster_rcnn_alt_opt/faster_rcnn_test.pt:    num_output: 21
