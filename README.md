@@ -1,4 +1,4 @@
-This Repository is a fork of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) in order to help achieving a binary classifier, using Pascal Voc 2012.
+This Repository is a fork of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) in order to help you just create you dataset in a certain format and just drop your files and train easily, without having to worry about modifying any code.
 
 The tutorial Readme can be found [here](https://github.com/deboc/py-faster-rcnn/blob/master/help/Readme.md), Credits to [Deboc's](https://github.com/deboc/) [repository](https://github.com/deboc/py-faster-rcnn/) for the tutorial, my addition is a clearer guide and more detailed on how to label the images easily and use a Pascal Voc 2012 format.
 
