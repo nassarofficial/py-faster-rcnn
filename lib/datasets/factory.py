@@ -17,7 +17,7 @@ import numpy as np
 example_dataset_path = 'data/Example_Dataset'
 for split in ['train', 'test']:
     name = '{}_{}'.format('example', split)
-    __sets[name] = (lambda split=split: irisa(split, example_dataset_path))
+    __sets[name] = (lambda split=split: example(split, example_dataset_path))
 
 # Set up coco_2014_<split>
 for year in ['2014']:
