@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<annotation>
+	<folder>sample</folder>
+	<filename>cat</filename>
+	<path>/home/nassar/Desktop/sample/cat.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>625</width>
+		<height>625</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cat</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>144</xmin>
+			<ymin>16</ymin>
+			<xmax>496</xmax>
+			<ymax>441</ymax>
+		</bndbox>
+	</object>
+</annotation>
