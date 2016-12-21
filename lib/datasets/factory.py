@@ -9,7 +9,6 @@
 
 __sets = {}
 
-from datasets.pascal_voc import pascal_voc
 from datasets.example import example
 from datasets.coco import coco
 import numpy as np
